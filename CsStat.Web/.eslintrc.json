@@ -62,6 +62,7 @@
         "no-mixed-operators": ["warn"],
         "react/jsx-uses-vars": "warn",
         "react/react-in-jsx-scope": "off",
+        "react/prop-types": 0,
         "no-unused-vars": "off",
         "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1 }],
         "no-useless-constructor": "off",

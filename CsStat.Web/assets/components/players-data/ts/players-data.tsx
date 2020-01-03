@@ -3,10 +3,12 @@ import { Table, Avatar, Divider, Tooltip, Dropdown, Icon, Button } from 'antd';
 import { connect } from 'react-redux';
 import { fetchPlayers, startRequest, stopRequest, selectPlayer } from '../../../general/ts/redux/actions';
 import FilterForm, { DateValues } from './filter-form';
-import { AppState, Player } from '../../../general/ts/redux/types';
+import { IAppState, RootState, Player } from '../../../general/ts/redux/types';
 import ColumnsSelector from './columns-selector';
 import { ColumnProps } from 'antd/es/table';
 import { nameof } from '../../../general/ts/extentions';
+import '../scss/index.scss';
+
 
 const CELL_CSS_CLASS = 'players-data__cell';
 const HIDDEN_CELL_CSS_CLASS = 'is-hidden';
@@ -42,11 +44,7 @@ class PlayersData extends React.Component<PlayersDataProps, PlayersDataState> {
         visibleColumns: [...DEFAULT_COLUMNS, ...PERMANENT_COLUMNS]
     };
 
-    componentDidMount() {
-        this.fetchPlayers(this.props.playersDataUrl);
-    }
-
-    private fetchPlayers(playersDataUrl: string, params?: DateValues) {
+    private fetchPlayers(playersDataUrl: string, params?: DateValues): void {
         const url = new URL(playersDataUrl, window.location.origin);
         if (params) {
             url.search = new URLSearchParams(params).toString();
@@ -56,24 +54,24 @@ class PlayersData extends React.Component<PlayersDataProps, PlayersDataState> {
 
         fetch(url.toString())
             .then((res: Response) => res.json())
-            .then((data: AppState) => {
+            .then((data: IAppState) => {
                 data = typeof data === 'string' ? JSON.parse(data) : data;
                 this.props.fetchPlayers(data);
             })
-            .catch(error => {
+            .catch((error) => {
                 this.props.stopRequest();
                 throw new Error(error);
             });
     }
 
-    private getAvatar(record: Player) {
+    private getAvatar(record: Player): ReactNode {
         if (record.ImagePath) {
             return <Avatar className="players-data__avatar" src={record.ImagePath} />;
         }
         return <Avatar icon="user" />;
     }
 
-    private onRowClick(record: Player) {
+    private onRowClick(record: Player): void {
         this.props.selectPlayer(record.Id);
     }
 
@@ -82,13 +80,12 @@ class PlayersData extends React.Component<PlayersDataProps, PlayersDataState> {
         return <div className={`players-data__cell-inner ${isSelectedClass}`}>{content}</div>;
     }
 
-    onFormSubmit = (params: DateValues) => {
+    onFormSubmit = (params: DateValues): void => {
         this.fetchPlayers(this.props.playersDataUrl, params);
     };
 
     onCheckboxesChange = (selectedColumns: string[]): void => {
         const visibleColumns = [...PERMANENT_COLUMNS, ...selectedColumns];
-        console.log(visibleColumns);
         this.setState({ visibleColumns });
     };
 
@@ -229,13 +226,13 @@ class PlayersData extends React.Component<PlayersDataProps, PlayersDataState> {
         }
     ];
 
-    get columnSelector() {
+    get columnSelector(): ReactNode {
         const { visibleColumns } = this.state;
-        const colsToRender = visibleColumns.filter(x => !PERMANENT_COLUMNS.includes(x));
+        const colsToRender = visibleColumns.filter((x) => !PERMANENT_COLUMNS.includes(x));
         return <ColumnsSelector visibleColumns={colsToRender} onCheckboxesChange={this.onCheckboxesChange} />;
     }
 
-    render() {
+    render(): ReactNode {
         const { IsLoading, DateFrom, DateTo, Players } = this.props;
 
         return (
@@ -296,12 +293,12 @@ type PlayersDataState = {
     visibleColumns: string[];
 };
 
-const mapStateToProps = (state: AppState) => {
-    const SelectedPlayer = state.SelectedPlayer;
-    const IsLoading = state.IsLoading;
-    const DateFrom = state.DateFrom;
-    const DateTo = state.DateTo;
-    const Players = state.Players;
+const mapStateToProps = (state: RootState) => {
+    const SelectedPlayer = state.app.SelectedPlayer;
+    const IsLoading = state.app.IsLoading;
+    const DateFrom = state.app.DateFrom;
+    const DateTo = state.app.DateTo;
+    const Players = state.app.Players;
     return { SelectedPlayer, IsLoading, DateFrom, DateTo, Players };
 };
 
@@ -327,6 +324,7 @@ export type ColumnMapping = {
     dataIndex: string;
     readableName: string;
 };
+
 export default connect(
     mapStateToProps,
     { fetchPlayers, startRequest, stopRequest, selectPlayer }

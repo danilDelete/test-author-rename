@@ -1,10 +1,19 @@
-type AppState = {
+import { RouterState } from 'connected-react-router';
+
+interface IAppState {
     IsLoading: boolean;
     SelectedPlayer: string;
     DateFrom: string;
     DateTo: string;
     Players: Player[];
-};
+    Posts: Post[];
+}
+
+type RootState = {
+    router?: RouterState;
+    app: IAppState;
+}
+
 type Player = {
     Id: string;
     Name: string;
@@ -46,10 +55,23 @@ type RelatedPlayer = {
     ImagePath: string;
 };
 
+type Post = {
+    Title: string;
+    Content: string;
+    tags: Tag[];
+    createdAt: string;
+    updatedAt: string;
+}
+
+type Tag = {
+    Caption: string;
+}
+
 const SELECT_PLAYER = 'SELECT_PLAYER';
 const FETCH_PLAYERS_DATA = 'FETCH_PLAYERS_DATA';
 const START_REQUEST = 'START_REQUEST';
 const STOP_REQUEST = 'STOP_REQUEST';
+const FETCH_POSTS_DATA = 'FETCH_POSTS_DATA';
 
 type SelectPlayerAction = {
     type: typeof SELECT_PLAYER;
@@ -66,24 +88,35 @@ type StopRequestAction = {
 
 type FetchPlayersAction = {
     type: typeof FETCH_PLAYERS_DATA;
-    payload: AppState;
+    payload: IAppState;
+};
+
+type FetchPostsAction = {
+    type: typeof FETCH_POSTS_DATA;
+    payload: Post[];
 };
 
 type ActionTypes =
     | SelectPlayerAction
     | StartRequestAction
     | StopRequestAction
-    | FetchPlayersAction;
+    | FetchPlayersAction
+    | FetchPostsAction;
 
 export {
-    AppState,
+    RootState,
+    IAppState,
     Player,
     Gun,
+    Post,
+    Tag,
     Achievement,
     ActionTypes,
     RelatedPlayer,
+    FetchPostsAction,
     SELECT_PLAYER,
     FETCH_PLAYERS_DATA,
     START_REQUEST,
-    STOP_REQUEST
+    STOP_REQUEST,
+    FETCH_POSTS_DATA
 };

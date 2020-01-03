@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import GunsChart from './guns-chart';
 import Achievements from './achievements';
 import RelatedPlayers from './related-players';
-import { AppState, Player, Gun } from '../../../general/ts/redux/types';
+import { RootState, Player, Gun } from '../../../general/ts/redux/types';
 import { selectPlayer } from '../../../general/ts/redux/actions';
+import '../scss/index.scss';
 
 const { Title } = Typography;
 const { Meta } = Card;
@@ -99,9 +100,9 @@ type PlayerCardProps = {
     selectPlayer: typeof selectPlayer;
 };
 
-const mapStateToProps = (state: AppState) => {
-    const SelectedPlayer = state.SelectedPlayer;
-    const Players = state.Players;
+const mapStateToProps = (state: RootState) => {
+    const SelectedPlayer = state.app.SelectedPlayer;
+    const Players = state.app.Players;
     return { SelectedPlayer, Players };
 };
 export default connect(

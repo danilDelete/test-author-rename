@@ -98,13 +98,11 @@
         "react-material-ui": "0.0.1",
         "react-redux": "7.1.1",
         "react-router-dom": "^5.1.2",
-        "react-snowstorm": "^0.0.3",
         "react-vis": "1.11.7",
         "redux": "4.0.4",
         "redux-devtools-extension": "2.13.8",
         "redux-thunk": "2.3.0",
         "shortid": "2.2.14",
-        "surprise-santa": "^1.0.3",
         "ts-loader": "6.1.0",
         "tslib": "^1.10.0"
     }

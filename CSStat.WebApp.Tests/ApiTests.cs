@@ -8,6 +8,7 @@ using BusinessFacade.Repositories.Implementations;
 using CSStat.CsLogsApi.Extensions;
 using CsStat.Domain.Definitions;
 using CsStat.Domain.Entities;
+using CsStat.SystemFacade;
 using DataService;
 using NUnit.Framework;
 
@@ -80,6 +81,8 @@ namespace CSStat.WebApp.Tests
             }
 
         }
+
+
 
         private static IEnumerable<string> FilterInt(this IEnumerable<string> list)
         {

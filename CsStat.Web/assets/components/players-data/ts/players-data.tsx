@@ -1,14 +1,13 @@
 import React, { ReactNode } from 'react';
 import { Table, Avatar, Divider, Tooltip, Dropdown, Icon, Button } from 'antd';
 import { connect } from 'react-redux';
+import { ColumnProps } from 'antd/es/table';
 import { fetchPlayers, startRequest, stopRequest, selectPlayer } from '../../../general/ts/redux/actions';
 import FilterForm, { DateValues } from './filter-form';
 import { IAppState, RootState, Player } from '../../../general/ts/redux/types';
 import ColumnsSelector from './columns-selector';
-import { ColumnProps } from 'antd/es/table';
 import { nameof } from '../../../general/ts/extentions';
 import '../scss/index.scss';
-
 
 const CELL_CSS_CLASS = 'players-data__cell';
 const HIDDEN_CELL_CSS_CLASS = 'is-hidden';
@@ -58,7 +57,7 @@ class PlayersData extends React.Component<PlayersDataProps, PlayersDataState> {
                 data = typeof data === 'string' ? JSON.parse(data) : data;
                 this.props.fetchPlayers(data);
             })
-            .catch((error) => {
+            .catch(error => {
                 this.props.stopRequest();
                 throw new Error(error);
             });
@@ -92,9 +91,8 @@ class PlayersData extends React.Component<PlayersDataProps, PlayersDataState> {
     private getCellClassName(dataIndex: string): string {
         if (this.state.visibleColumns.includes(dataIndex)) {
             return CELL_CSS_CLASS;
-        } else {
-            return `${CELL_CSS_CLASS} ${HIDDEN_CELL_CSS_CLASS}`;
         }
+        return `${CELL_CSS_CLASS} ${HIDDEN_CELL_CSS_CLASS}`;
     }
 
     private getColumns = (): ColumnProps<Player>[] => [
@@ -111,125 +109,103 @@ class PlayersData extends React.Component<PlayersDataProps, PlayersDataState> {
             dataIndex: COLUMN_NAMES.Name.dataIndex,
             title: COLUMN_NAMES.Name.readableName,
             className: this.getCellClassName(COLUMN_NAMES.Name.dataIndex),
-            render: (_link: any, record: Player) => {
-                return this.cellWrapper(record.Id, record.Name);
-            },
+            render: (_link: any, record: Player) => this.cellWrapper(record.Id, record.Name),
             sorter: (a: Player, b: Player) => a.Name.localeCompare(b.Name)
         },
         {
             dataIndex: COLUMN_NAMES.Points.dataIndex,
             title: COLUMN_NAMES.Points.readableName,
             className: this.getCellClassName(COLUMN_NAMES.Points.dataIndex),
-            render: (_link: any, record: Player) => {
-                return this.cellWrapper(record.Id, record.Points);
-            },
+            render: (_link: any, record: Player) => this.cellWrapper(record.Id, record.Points),
             sorter: (a: Player, b: Player) => b.Points - a.Points
         },
         {
             dataIndex: COLUMN_NAMES.KdRatio.dataIndex,
             title: () => <Tooltip title="Kills / Deaths">{COLUMN_NAMES.KdRatio.readableName}</Tooltip>,
             className: this.getCellClassName(COLUMN_NAMES.KdRatio.dataIndex),
-            render: (_link: any, record: Player) => {
-                return this.cellWrapper(record.Id, record.KdRatio);
-            },
+            render: (_link: any, record: Player) => this.cellWrapper(record.Id, record.KdRatio),
             sorter: (a: Player, b: Player) => b.KdRatio - a.KdRatio
         },
         {
             dataIndex: COLUMN_NAMES.Kills.dataIndex,
             title: COLUMN_NAMES.Kills.readableName,
             className: this.getCellClassName(COLUMN_NAMES.Kills.dataIndex),
-            render: (_link: any, record: Player) => {
-                return this.cellWrapper(record.Id, record.Kills);
-            },
+            render: (_link: any, record: Player) => this.cellWrapper(record.Id, record.Kills),
             sorter: (a: Player, b: Player) => b.Kills - a.Kills
         },
         {
             dataIndex: COLUMN_NAMES.Deaths.dataIndex,
             title: COLUMN_NAMES.Deaths.readableName,
             className: this.getCellClassName(COLUMN_NAMES.Deaths.dataIndex),
-            render: (_link: any, record: Player) => {
-                return this.cellWrapper(record.Id, record.Deaths);
-            },
+            render: (_link: any, record: Player) => this.cellWrapper(record.Id, record.Deaths),
             sorter: (a: Player, b: Player) => b.Deaths - a.Deaths
         },
         {
             dataIndex: COLUMN_NAMES.KillsPerGame.dataIndex,
             title: COLUMN_NAMES.KillsPerGame.readableName,
             className: this.getCellClassName(COLUMN_NAMES.KillsPerGame.dataIndex),
-            render: (_link: any, record: Player) => {
-                return this.cellWrapper(record.Id, record.KillsPerGame);
-            },
+            render: (_link: any, record: Player) => this.cellWrapper(record.Id, record.KillsPerGame),
             sorter: (a: Player, b: Player) => b.KillsPerGame - a.KillsPerGame
         },
         {
             dataIndex: COLUMN_NAMES.HeadShot.dataIndex,
             title: COLUMN_NAMES.HeadShot.readableName,
             className: this.getCellClassName(COLUMN_NAMES.HeadShot.dataIndex),
-            render: (_link: any, record: Player) => {
-                return this.cellWrapper(record.Id, record.HeadShot);
-            },
+            render: (_link: any, record: Player) => this.cellWrapper(record.Id, record.HeadShot),
             sorter: (a: Player, b: Player) => b.HeadShot - a.HeadShot
         },
         {
             dataIndex: COLUMN_NAMES.Assists.dataIndex,
             title: COLUMN_NAMES.Assists.dataIndex,
             className: this.getCellClassName(COLUMN_NAMES.Assists.dataIndex),
-            render: (_link: any, record: Player) => {
-                return this.cellWrapper(record.Id, record.Assists);
-            },
+            render: (_link: any, record: Player) => this.cellWrapper(record.Id, record.Assists),
             sorter: (a: Player, b: Player) => b.Assists - a.Assists
         },
         {
             dataIndex: COLUMN_NAMES.AssistsPerGame.dataIndex,
             title: COLUMN_NAMES.AssistsPerGame.readableName,
             className: this.getCellClassName(COLUMN_NAMES.AssistsPerGame.dataIndex),
-            render: (_link: any, record: Player) => {
-                return this.cellWrapper(record.Id, record.AssistsPerGame);
-            },
+            render: (_link: any, record: Player) => this.cellWrapper(record.Id, record.AssistsPerGame),
             sorter: (a: Player, b: Player) => b.AssistsPerGame - a.AssistsPerGame
         },
         {
             dataIndex: COLUMN_NAMES.DefusedBombs.dataIndex,
             title: COLUMN_NAMES.DefusedBombs.readableName,
             className: this.getCellClassName(COLUMN_NAMES.DefusedBombs.dataIndex),
-            render: (_link: any, record: Player) => {
-                return this.cellWrapper(record.Id, record.DefusedBombs);
-            },
+            render: (_link: any, record: Player) => this.cellWrapper(record.Id, record.DefusedBombs),
             sorter: (a: Player, b: Player) => b.DefusedBombs - a.DefusedBombs
         },
         {
             dataIndex: COLUMN_NAMES.ExplodedBombs.dataIndex,
             title: COLUMN_NAMES.ExplodedBombs.readableName,
             className: this.getCellClassName(COLUMN_NAMES.ExplodedBombs.dataIndex),
-            render: (_link: any, record: Player) => {
-                return this.cellWrapper(record.Id, record.ExplodedBombs);
-            },
+            render: (_link: any, record: Player) => this.cellWrapper(record.Id, record.ExplodedBombs),
             sorter: (a: Player, b: Player) => b.ExplodedBombs - a.ExplodedBombs
         },
         {
             dataIndex: COLUMN_NAMES.FriendlyKills.dataIndex,
             title: COLUMN_NAMES.FriendlyKills.readableName,
             className: this.getCellClassName(COLUMN_NAMES.FriendlyKills.dataIndex),
-            render: (_link: any, record: Player) => {
-                return this.cellWrapper(record.Id, record.FriendlyKills);
-            },
+            render: (_link: any, record: Player) => this.cellWrapper(record.Id, record.FriendlyKills),
             sorter: (a: Player, b: Player) => b.FriendlyKills - a.FriendlyKills
         },
         {
             dataIndex: COLUMN_NAMES.TotalGames.dataIndex,
             title: COLUMN_NAMES.TotalGames.readableName,
             className: this.getCellClassName(COLUMN_NAMES.TotalGames.dataIndex),
-            render: (_link: any, record: Player) => {
-                return this.cellWrapper(record.Id, record.TotalGames);
-            },
+            render: (_link: any, record: Player) => this.cellWrapper(record.Id, record.TotalGames),
             sorter: (a: Player, b: Player) => b.TotalGames - a.TotalGames
         }
     ];
 
     get columnSelector(): ReactNode {
         const { visibleColumns } = this.state;
-        const colsToRender = visibleColumns.filter((x) => !PERMANENT_COLUMNS.includes(x));
+        const colsToRender = visibleColumns.filter(x => !PERMANENT_COLUMNS.includes(x));
         return <ColumnsSelector visibleColumns={colsToRender} onCheckboxesChange={this.onCheckboxesChange} />;
+    }
+
+    componentDidMount() {
+        this.fetchPlayers(this.props.playersDataUrl);
     }
 
     render(): ReactNode {
@@ -263,13 +239,11 @@ class PlayersData extends React.Component<PlayersDataProps, PlayersDataState> {
                     bordered={true}
                     scroll={{ x: true }}
                     loading={IsLoading}
-                    onRow={record => {
-                        return {
-                            onClick: () => {
-                                this.onRowClick(record);
-                            }
-                        };
-                    }}
+                    onRow={record => ({
+                        onClick: () => {
+                            this.onRowClick(record);
+                        }
+                    })}
                 />
             </>
         );
@@ -299,7 +273,13 @@ const mapStateToProps = (state: RootState) => {
     const DateFrom = state.app.DateFrom;
     const DateTo = state.app.DateTo;
     const Players = state.app.Players;
-    return { SelectedPlayer, IsLoading, DateFrom, DateTo, Players };
+    return {
+        SelectedPlayer,
+        IsLoading,
+        DateFrom,
+        DateTo,
+        Players
+    };
 };
 
 export type ColumnNames = {
@@ -327,5 +307,10 @@ export type ColumnMapping = {
 
 export default connect(
     mapStateToProps,
-    { fetchPlayers, startRequest, stopRequest, selectPlayer }
+    {
+        fetchPlayers,
+        startRequest,
+        stopRequest,
+        selectPlayer
+    }
 )(PlayersData);

@@ -1,0 +1,18 @@
+@using Microsoft.Ajax.Utilities
+
+@model string
+
+@using (Html.BeginForm("SignIn", "SignIn"))
+{
+    <form style="border: black 1px solid; display: inline-block; margin-top: 15px;" method="post">
+        <label for="login">Login</label>
+        <input type="text" name="Name" id="login"> <br />
+        <label for="password">Password</label>
+        <input type="password" name="password" id="Password"> <br />
+        <input type="submit" value="Sign In" />
+        @if (!Model.IsNullOrWhiteSpace())
+        {
+            <p>@Model</p>
+        }
+    </form>
+}

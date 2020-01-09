@@ -10,11 +10,35 @@ namespace CsStat.Web
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.LowercaseUrls = true;
+
             routes.MapRoute
             (
                 name: "getrepository",
                 url: Settings.PlayersDataApiPath,
                 defaults: new { controller = "Home", action = "GetRepository", id = UrlParameter.Optional }
+            );
+
+            //don't remove: custom admin
+            //routes.MapRoute
+            //(
+            //    name: "Admin",
+            //    url: "Admin",
+            //    defaults: new { controller = "SignIn", action = "SignIn", id = UrlParameter.Optional }
+            //);
+
+            routes.MapRoute
+            (
+                name: "Admin",
+                url: "Admin",
+                defaults: new { controller = "SignIn", action = "StrapiAdmin", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute
+            (
+                name: "getinfo",
+                url: Settings.InfoDataApiPath,
+                defaults: new { controller = "Wiki", action = "GetInfo", id = UrlParameter.Optional }
             );
 
             routes.MapRoute(

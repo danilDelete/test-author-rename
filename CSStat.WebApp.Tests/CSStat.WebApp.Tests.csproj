@@ -92,6 +92,10 @@
       <Project>{487EA211-0EDA-4168-B0E8-045767475D40}</Project>
       <Name>CsStat.SystemFacade</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CsStat.Web\CsStat.Web.csproj">
+      <Project>{8BF54175-DFD2-41AD-80FD-B8C962170293}</Project>
+      <Name>CsStat.Web</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

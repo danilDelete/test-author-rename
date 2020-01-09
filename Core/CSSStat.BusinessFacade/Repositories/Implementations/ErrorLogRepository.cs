@@ -4,17 +4,15 @@ using DataService.Interfaces;
 
 namespace BusinessFacade.Repositories.Implementations
 {
-    public class ErrorLogRepository : IErrorLogRepository
+    public class ErrorLogRepository : BaseRepository, IErrorLogRepository 
     {
-        private static IMongoRepositoryFactory _mongoRepository;
-
-        public ErrorLogRepository(IMongoRepositoryFactory mongoRepository)
+        public ErrorLogRepository(IMongoRepositoryFactory mongoRepository) : base(mongoRepository)
         {
-            _mongoRepository = mongoRepository;
         }
+
         public void Error(Error error)
         {
-            _mongoRepository.GetRepository<Error>().Collection.Insert(error);
+            base.Insert(error);
         }
     }
 }

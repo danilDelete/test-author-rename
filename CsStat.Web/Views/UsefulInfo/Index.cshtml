@@ -1,0 +1,48 @@
+@model CsStat.Web.Models.UsefulLinksViewModel
+
+    <div style="margin-top: 15px; margin-left: 15px;">
+        @if (Model.IsAdminMode)
+        {
+            <button type="button" class="btn btn-add" name="btnAdd" id="btnAdd" style="margin-top: 15px;" onclick="location.href = '@Url.Action("SignOut", "SignIn")'">
+                Sign Out
+            </button>
+        }
+    </div>
+
+    <div style="margin-top: 15px; margin-left: 15px;">
+        @if (Model.Items.Any())
+        {
+            foreach (var item in Model.Items)
+            {
+                <div style="border: gray 1px solid; margin-top: 15px;">
+                    <h2>@item.Caption</h2> <br/>
+                    <p>@Html.Raw(item.Description)</p> <br/>
+                    @if (!string.IsNullOrEmpty(item.ImagePath))
+                    {
+                        <img src="@Url.Content("~/Files/Images/" + item.ImagePath)" width="200" height="100" alt="image"/>
+                        <br/>
+                    }
+                    <h5>@item.Url</h5> <br/>
+                    <h5>@item.PublishDate.ToShortDateString()</h5><br />
+                    @foreach (var tag in item.Tags)
+                    {
+                        <tag>#@tag</tag>
+                    }
+                    @if (Model.IsAdminMode)
+                    {
+                        <br />
+                        <button type="button" class="btn btn-edit" onclick="location.href = '@Url.Action("Add", "Wiki", new {id = item.Id})'">Edit</button>
+                        <button type="button" class="btn btn-delete" onclick="location.href = '@Url.Action("Remove", "Wiki", new {id = item.Id})'">Delete</button>
+                    }
+                </div>
+            }
+        }
+        @if (Model.IsAdminMode)
+        {
+            <button type="button" class="btn btn-add" name="btnAdd" id="btnAdd" style="margin-top: 15px;"
+                    onclick="location.href = '@Url.Action("Add", "Wiki")'">
+                Add
+            </button>
+            <label>* on click show modal form</label>
+        }
+    </div>

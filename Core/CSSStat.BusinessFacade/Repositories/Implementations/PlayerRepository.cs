@@ -13,12 +13,12 @@ using MongoDB.Driver.Builders;
 
 namespace BusinessFacade.Repositories.Implementations
 {
-    public class PlayerRepository : IPlayerRepository
+    public class PlayerRepository : BaseRepository, IPlayerRepository
     {
         private static ILogsRepository _logsRepository;
         private static IMongoRepositoryFactory _mongoRepository;
         
-        public PlayerRepository(IMongoRepositoryFactory mongoRepository)
+        public PlayerRepository(IMongoRepositoryFactory mongoRepository) : base(mongoRepository)
         {
             _mongoRepository = mongoRepository;
             _logsRepository = new LogsRepository(_mongoRepository);
@@ -26,7 +26,7 @@ namespace BusinessFacade.Repositories.Implementations
 
         public IEnumerable<Player> GetAllPlayers()
         {
-            return _mongoRepository.GetRepository<Player>().Collection.FindAll();
+            return base.GetAll<Player>();
         }
 
         public Player GetPlayerByNickName(string nickName)
@@ -37,8 +37,7 @@ namespace BusinessFacade.Repositories.Implementations
 
         public Player GetPlayerById(string id)
         {
-            var query = new QueryBuilder<Player>();
-            return _mongoRepository.GetRepository<Player>().Collection.Find(query.EQ(x => x.Id, id)).FirstOrDefault();
+            return base.GetOne<Player>(id);
         }
 
         public string AddPlayer(Player player)
@@ -50,7 +49,7 @@ namespace BusinessFacade.Repositories.Implementations
 
         public void AddPlayers(List<Player> players)
         {
-            _mongoRepository.GetRepository<Player>().Collection.InsertBatch(players);
+           base.InsertBatch(players);
         }
 
         public void UpdatePlayer(string id, string firstName = null, string secondName = null, string imagePath = null)

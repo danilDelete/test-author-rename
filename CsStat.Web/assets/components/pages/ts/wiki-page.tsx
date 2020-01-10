@@ -8,7 +8,7 @@ import Post from '../../post';
 
 class WikiPage extends React.Component<WikiPageProps> {
     fetchPosts(WikiDataApiPath: string): void {
-        const url = new URL(WikiDataApiPath);
+        const url = new URL(WikiDataApiPath, window.location.origin);
 
         fetch(url.toString())
             .then((res: Response) => res.json())

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web.Mvc;
 using AutoMapper;
 using BusinessFacade.Repositories;
@@ -59,17 +60,37 @@ namespace CsStat.Web.Controllers
 
         public ActionResult GetAllArticlesFromCms()
         {
-            var json = string.Empty;
-            using (var wc = new WebClient())
-            {
-                json = wc.DownloadString(Settings.ArticlesPath);
-            }
+            var json = GetJson(Settings.ArticlesPath);
             return new JsonResult
             {
                 Data = json,
-                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
             };
         }
+
+        private string GetJson(string url)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            try
+            {
+                WebResponse response = request.GetResponse();
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.UTF8);
+                    return reader.ReadToEnd();
+                }
+            }
+            catch (WebException ex)
+            {
+                WebResponse errorResponse = ex.Response;
+                using (Stream responseStream = errorResponse.GetResponseStream())
+                {
+                    StreamReader reader = new StreamReader(responseStream, System.Text.Encoding.GetEncoding("utf-8"));
+                    return reader.ReadToEnd();
+                }
+            }
+        }
+
         public ActionResult Add(string id="")
         {
             var isAdminMode = Session["IsAdminMode"] != null && Session["IsAdminMode"].ToString() == "true";

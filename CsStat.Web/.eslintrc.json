@@ -70,6 +70,7 @@
         "@typescript-eslint/no-unused-vars": "error",
         "@typescript-eslint/no-useless-constructor": "error",
         "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/interface-name-refix": "off"
+        "@typescript-eslint/interface-name-refix": "off",
+        "arrow-parens": ["error", "always"]
     }
 }

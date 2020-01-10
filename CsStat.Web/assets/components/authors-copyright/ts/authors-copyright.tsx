@@ -1,53 +1,71 @@
-import React from 'react';
-import { List, Avatar, Tag, Typography } from 'antd';
+import React, { ReactNode } from 'react';
+import { List, Avatar, Typography } from 'antd';
 
 const { Title } = Typography;
+const URL_REP = 'https://api.github.com/repos/dotnetcrafted/cs-go-statistics/contributors';
 
-const AuthorsCopyright = () => (
-    <List
-        size="small"
-        bordered={true}
-        header={<Title level={4}>Authors and Contributors:</Title>}
-        itemLayout="horizontal"
-        dataSource={data}
-        renderItem={person => (
-            <List.Item>
-                <List.Item.Meta
-                    avatar={<Avatar src={person.avatarSrc} />}
-                    title={
-                        <div>
-                            <a href={person.githubLink}>{person.name}</a> – <Tag>{person.role}</Tag>
-                        </div>
-                    }
-                />
-            </List.Item>
-        )}
-    />
-);
-export default AuthorsCopyright;
-const githubAccounts = {
-    rdk174: 'Rdk174',
-    medprj: 'Medprj',
-    host: 'hostile-d'
+export default class AuthorsCopyright extends React.Component<any, AuthorsCopyrightState> {
+    state = {
+        data: [
+            {
+                /* eslint-disable */
+                avatar_url: '',
+                html_url: '',
+                login: ''
+                /* eslint-enable */
+            }
+        ]
+    };
+
+    private getGithubAccounts = async () => {
+        const accounts: UserData[] = await fetch(URL_REP)
+            .then((res: Response) => res.json())
+            .then((acc) => acc.filter((elem: { type: string }) => elem.type === 'User'))
+            .catch((err) => {
+                throw new Error(err);
+            });
+
+        this.setState({
+            data: accounts
+        });
+    };
+
+    componentDidMount = () => {
+        this.getGithubAccounts();
+    };
+
+    render(): ReactNode {
+        const { data } = this.state;
+        return (
+            <List
+                size="small"
+                bordered={true}
+                header={<Title level={4}>Authors and Contributors:</Title>}
+                itemLayout="horizontal"
+                dataSource={data}
+                renderItem={(person): ReactNode => (
+                    <List.Item>
+                        <List.Item.Meta
+                            avatar={<Avatar icon="user" src={person.avatar_url} />}
+                            title={
+                                <div>
+                                    <a href={person.html_url}>{person.login}</a>
+                                </div>
+                            }
+                        />
+                    </List.Item>
+                )}
+            />
+        );
+    }
+}
+
+type AuthorsCopyrightState = {
+    data: UserData[];
 };
 
-const data = [
-    {
-        name: 'Radik F',
-        githubLink: `https://github.com/${githubAccounts.rdk174}`,
-        avatarSrc: `https://github.com/${githubAccounts.rdk174}.png`,
-        role: 'backend'
-    },
-    {
-        name: 'Alexander M',
-        githubLink: `https://github.com/${githubAccounts.medprj}`,
-        avatarSrc: `https://github.com/${githubAccounts.medprj}.png`,
-        role: 'backend'
-    },
-    {
-        name: 'Danil S',
-        githubLink: `https://github.com/${githubAccounts.host}`,
-        avatarSrc: `https://github.com/${githubAccounts.host}.png`,
-        role: 'frontend'
-    }
-];
+type UserData = {
+    avatar_url: string;
+    html_url: string;
+    login: string;
+};

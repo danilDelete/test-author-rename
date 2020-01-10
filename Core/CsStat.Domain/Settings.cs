@@ -13,7 +13,6 @@ namespace CsStat.Domain
         public static int TimerInterval => GetSetting(nameof(TimerInterval), Defaults.TimerInterval);
         public static int TakeLines => GetSetting(nameof(TakeLines), Defaults.TakeLines);
         public static string PlayersDataApiPath => GetSetting(nameof(PlayersDataApiPath), Defaults.PlayersDataApiPath);
-        public static string InfoDataApiPath => GetSetting(nameof(InfoDataApiPath), Defaults.InfoDataApiPath);
         public static string WikiDataApiPath => GetSetting(nameof(WikiDataApiPath), Defaults.WikiDataApiPath);
         public static string WikiPagePath => GetSetting(nameof(WikiPagePath), Defaults.WikiPagePath);
         public static string PlayersDataSteamApiPath => GetSetting(nameof(PlayersDataSteamApiPath), Defaults.PlayersDataSteamApiPath);
@@ -59,8 +58,7 @@ namespace CsStat.Domain
             public const int TimerInterval = 10000;
             public const int TakeLines = 50;
             public const string PlayersDataApiPath = "api/playersdata";
-            public const string InfoDataApiPath = "api/infodata";
-            public const string WikiDataApiPath = "http://csfuse8.site:1337/articles";
+            public const string WikiDataApiPath = "api/articles";
             public const string WikiPagePath = "wiki";
             public const string PlayersDataSteamApiPath = @"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/";
             public const long FirstSteamId = 76561197960265728;

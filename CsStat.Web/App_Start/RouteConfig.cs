@@ -37,8 +37,8 @@ namespace CsStat.Web
             routes.MapRoute
             (
                 name: "getinfo",
-                url: Settings.InfoDataApiPath,
-                defaults: new { controller = "Wiki", action = "GetInfo", id = UrlParameter.Optional }
+                url: Settings.WikiDataApiPath,
+                defaults: new { controller = "Wiki", action = "GetAllArticlesFromCms", id = UrlParameter.Optional }
             );
 
             routes.MapRoute(

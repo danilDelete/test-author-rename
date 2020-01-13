@@ -63,8 +63,8 @@ namespace CsStat.Domain
             public const string PlayersDataSteamApiPath = @"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/";
             public const long FirstSteamId = 76561197960265728;
             public const string ApiKey = "C03F2D79CF2FE20B64A85531031F3983";
-            public const string ArticlesPath = "http://csfuse8.site:1337/articles";
-            public const string CmsAdminPath = "http://csfuse8.site:1337/admin";
+            public const string ArticlesPath = "https://admin.csfuse8.site/articles";
+            public const string CmsAdminPath = "https://admin.csfuse8.site/shell";
             public const int ShowNullPlayers = 1;
         }
     }

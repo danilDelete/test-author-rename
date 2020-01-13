@@ -31,7 +31,7 @@ namespace CsStat.Web
             (
                 name: "Admin",
                 url: "Admin",
-                defaults: new { controller = "SignIn", action = "StrapiAdmin", id = UrlParameter.Optional }
+                defaults: new { controller = "SignIn", action = "Admin", id = UrlParameter.Optional }
             );
 
             routes.MapRoute

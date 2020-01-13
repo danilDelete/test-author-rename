@@ -38,7 +38,7 @@ namespace CsStat.Web.Controllers
         //    Session["IsAdminMode"] = "false";
         //    return RedirectToAction("Index", "Wiki");
         //}
-        public ActionResult StrapiAdmin()
+        public ActionResult Admin()
         {
             return RedirectPermanent(Settings.CmsAdminPath);
         }

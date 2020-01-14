@@ -95,22 +95,30 @@ namespace BusinessFacade.Repositories.Implementations
             
             foreach (var player in players)
             {
-                var guns = GetGuns(logs.Where(x => x.Player?.Id == player.Id && x.Action == Actions.Kill).ToList());
+                var playerLogs = logs.Where(x => x.Player?.Id == player.Id).ToList();
+                var victimLogs = logs.Where(x => x.Victim?.Id == player.Id).ToList();
+
+                if (!playerLogs.Any() && !victimLogs.Any())
+                {
+                    continue;
+                }
+
+                var guns = GetGuns(playerLogs.Where(x =>x.Action == Actions.Kill).ToList());
                 var sniperRifle = guns?.Where(x => x.Gun.GetAttribute<IsSniperRifleAttribute>().Value);
                 var grenade = guns?.Where(x => x.Gun == Guns.He).Sum(x=>x.Kills);
                 var molotov = guns?.Where(x => x.Gun == Guns.Molotov || x.Gun == Guns.Inferno || x.Gun == Guns.Inc).Sum(x=>x.Kills);
-                var explodeBombs = GetExplodeBombs(logs.Where(x => x.Player?.Id == player.Id && x.Action == Actions.Plant).ToList());
-                var defuse = logs.Count(x => x.Player?.Id == player.Id && x.Action == Actions.Defuse);
-                var friendlyKills = logs.Count(x => x.Player?.Id == player.Id && x.Action == Actions.FriendlyKill);
-                var assists = logs.Count(x => x.Player?.Id == player.Id && x.Action == Actions.Assist);
-                var kills = logs.Count(x => x.Player?.Id == player.Id && x.Action == Actions.Kill);
-                var death = logs.Count(x => x.Victim?.Id == player.Id && x.Action == Actions.Kill);
-                var totalGames = logs.Count(x => x.Player?.Id == player.Id && x.Action == Actions.EnteredTheGame);
-                var headShotCount = logs.Count(x => x.Player?.Id == player.Id && x.IsHeadShot && x.Action == Actions.Kill);
-                var victimList = logs.Where(x => x.Player?.Id == player.Id && x.Action == Actions.Kill).Select(x => x.Victim).ToList();
-                var killerList = logs.Where(x => x.Victim?.Id == player.Id && x.Action == Actions.Kill).Select(x => x.Player).ToList();
-                var friendlyVictimList = logs.Where(x => x.Player?.Id == player.Id && x.Action == Actions.FriendlyKill).Select(x => x.Victim).ToList();
-                var friendlyKillerList = logs.Where(x => x.Victim?.Id == player.Id && x.Action == Actions.FriendlyKill).Select(x => x.Player).ToList();
+                var explodeBombs = GetExplodeBombs(playerLogs.Where(x=>x.Action==Actions.Plant).ToList(), logs.Where(x=>x.Action==Actions.TargetBombed).ToList());
+                var defuse = playerLogs.Count(x =>x.Action == Actions.Defuse);
+                var friendlyKills = playerLogs.Count(x => x.Action == Actions.FriendlyKill);
+                var assists = playerLogs.Count(x => x.Action == Actions.Assist);
+                var kills = playerLogs.Count(x => x.Action == Actions.Kill);
+                var death = victimLogs.Count(x => x.Action == Actions.Kill);
+                var totalGames = playerLogs.Count(x => x.Action == Actions.EnteredTheGame);
+                var headShotCount = playerLogs.Count(x => x.IsHeadShot && x.Action == Actions.Kill);
+                var victimList = playerLogs.Where(x => x.Action == Actions.Kill).Select(x => x.Victim).ToList();
+                var killerList = victimLogs.Where(x => x.Action == Actions.Kill).Select(x => x.Player).ToList();
+                var friendlyVictimList = playerLogs.Where(x => x.Action == Actions.FriendlyKill).Select(x => x.Victim).ToList();
+                var friendlyKillerList = victimLogs.Where(x => x.Action == Actions.FriendlyKill).Select(x => x.Player).ToList();
 
                 playersStats.Add(new PlayerStatsModel
                 {
@@ -271,11 +279,10 @@ namespace BusinessFacade.Repositories.Implementations
                        }).OrderByDescending(x=>x.Kills).ToList();
         }
 
-        private static int GetExplodeBombs(IReadOnlyCollection<Log> logs)
+        private static int GetExplodeBombs(IReadOnlyCollection<Log> playersLogs, IReadOnlyCollection<Log> logs)
         {
-            return !logs.Any()
-                ? 0
-                : logs.Select(bomb => _logsRepository.GetLogsForPeriod(bomb.DateTime, bomb.DateTime.AddMinutes(1)).ToList())
+
+            return playersLogs.Select(bomb => logs.Where(x => x.DateTime > bomb.DateTime && x.DateTime < bomb.DateTime.AddMinutes(1)).ToList())
                     .Count(intervalLogs => intervalLogs.Count(x => x.Action == Actions.TargetBombed) > 0);
         }
 

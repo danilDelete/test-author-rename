@@ -17,7 +17,7 @@ class WikiPage extends React.Component<WikiPageProps> {
 
                 this.props.fetchPosts(data);
             })
-            .catch((error) => {
+            .catch(error => {
                 throw new Error(error);
             });
     }
@@ -30,23 +30,17 @@ class WikiPage extends React.Component<WikiPageProps> {
         const { Posts } = this.props;
 
         if (Posts.length > 0) {
-            return (
-                <Col xs={24} lg={14}>
-                    {Posts.map((post, index) => <Post key={index} post={post}/>)}
-                </Col>
-            );
+            return Posts.map((post: PostType, index: number) => <Post key={index} post={post} />);
         }
-        return (
-            <Col xs={24} lg={24}>
-                <Empty/>
-            </Col>
-        );
+        return <Empty />;
     }
 
     render(): ReactNode {
         return (
             <Row type="flex" justify="start" align="middle">
-                { this.getPosts() }
+                <Col xs={{ span: 24 }} lg={{ span: 12, offset: 6 }}>
+                    {this.getPosts()}
+                </Col>
             </Row>
         );
     }

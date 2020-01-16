@@ -188,7 +188,6 @@ namespace BusinessFacade.Repositories.Implementations
                 summaryStat.Defuse += playerStats.Defuse;
                 summaryStat.Explode += playerStats.Explode;
                 summaryStat.Points += playerStats.Points;
-                summaryStat.HeadShot += playerStats.HeadShot;
                 summaryStat.SniperRifleKills += playerStats.SniperRifleKills;
 
                 if (playerStats.Victims != null && playerStats.Victims.Any())

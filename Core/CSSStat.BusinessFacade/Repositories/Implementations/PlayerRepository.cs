@@ -27,7 +27,7 @@ namespace BusinessFacade.Repositories.Implementations
 
         public IEnumerable<Player> GetAllPlayers()
         {
-            return base.GetAll<Player>();
+            return base.GetAll<Player>().OrderByDescending(x=>x.Id).DistinctBy(x=>x.SteamId);
         }
 
         public Player GetPlayerByNickName(string nickName)
@@ -88,7 +88,7 @@ namespace BusinessFacade.Repositories.Implementations
             if (!logs.Any())
                 return playersStats;
 
-            var players = GetAllPlayers().ToList();
+            var players = GetAllPlayers().DistinctBy(x=>x.SteamId).ToList();
 
             if(!players.Any())
                 return playersStats;
@@ -96,8 +96,8 @@ namespace BusinessFacade.Repositories.Implementations
             
             foreach (var player in players)
             {
-                var playerLogs = logs.Where(x => x.Player?.Id == player.Id).ToList();
-                var victimLogs = logs.Where(x => x.Victim?.Id == player.Id).ToList();
+                var playerLogs = logs.Where(x => x.Player?.SteamId == player.SteamId).ToList();
+                var victimLogs = logs.Where(x => x.Victim?.SteamId == player.SteamId).ToList();
 
                 if (!playerLogs.Any() && !victimLogs.Any())
                 {
@@ -146,17 +146,6 @@ namespace BusinessFacade.Repositories.Implementations
             }
 
             playersStats = playersStats.Where(x => x.TotalGames > 0).OrderByDescending(x=>x.Kills).ToList();
-            var duplicatesIds = playersStats.GroupBy(x => x.Player.SteamId).Where(group => group.Count() > 1).Select(group => group.Key).ToList();
-
-            if (duplicatesIds.Any())
-            {
-                foreach (var duplicatesId in duplicatesIds)
-                {
-                    var mergedStats = MergePlayersStats(playersStats.Where(x => x.Player.SteamId == duplicatesId).ToList());
-                    playersStats.RemoveAll(x => x.Player.SteamId == duplicatesId);
-                    playersStats.Add(mergedStats);
-                }
-            }
 
             var achievements = GetAchievements(playersStats);
 
@@ -168,78 +157,6 @@ namespace BusinessFacade.Repositories.Implementations
             return playersStats;
         }
 
-        private static PlayerStatsModel MergePlayersStats(IReadOnlyCollection<PlayerStatsModel> playersStats)
-        {
-            var summaryStat = new PlayerStatsModel
-            {
-                Player = playersStats.Last().Player,
-                Victims = new List<PlayerModel>(),
-                Killers = new List<PlayerModel>()
-            };
-            
-            foreach (var playerStats in playersStats)
-            {
-                summaryStat.Kills += playerStats.Kills;
-                summaryStat.Death += playerStats.Death;
-                summaryStat.Assists += playerStats.Assists;
-                summaryStat.FriendlyKills += playerStats.FriendlyKills;
-                summaryStat.TotalGames += playerStats.TotalGames;
-                summaryStat.HeadShot += playerStats.HeadShot;
-                summaryStat.Defuse += playerStats.Defuse;
-                summaryStat.Explode += playerStats.Explode;
-                summaryStat.Points += playerStats.Points;
-                summaryStat.SniperRifleKills += playerStats.SniperRifleKills;
-
-                if (playerStats.Victims != null && playerStats.Victims.Any())
-                {
-                    summaryStat.Victims.AddRange(playerStats.Victims);
-                }
-
-                if (playerStats.Killers != null && playerStats.Killers.Any())
-                {
-                    summaryStat.Killers.AddRange(playerStats.Killers);
-                }
-            }
-            
-            var guns = playersStats.Where(x=>x.Guns!=null).SelectMany(x => x.Guns).ToList();
-            var duplicateGuns = guns.GroupBy(x => x.Gun).Where(group => group.Count() > 1).Select(group => group.Key).ToList();
-            var mergedGuns = new List<GunModel>();
-
-            foreach (var gun in duplicateGuns)
-            {
-                mergedGuns.Add(new GunModel
-                {
-                    Gun = gun,
-                    Kills = guns.Where(x=>x.Gun==gun).Sum(x=>x.Kills)
-                });
-            }
-
-            var uniqueGuns = guns.Where(x=> duplicateGuns.All(y => y != x.Gun));
-
-            summaryStat.Guns = mergedGuns;
-            summaryStat.Guns.AddRange(uniqueGuns);
-
-            summaryStat.Victims = MergePlayers(summaryStat.Victims).OrderByDescending(x=>x.Count).ToList();
-            summaryStat.Killers = MergePlayers(summaryStat.Killers).OrderByDescending(x=>x.Count).ToList();
-
-            return summaryStat;
-        }
-
-        private static List<PlayerModel> MergePlayers(List<PlayerModel> players)
-        {
-            var victimModel = new List<PlayerModel>();
-            foreach (var victim in players.DistinctBy(x => x.SteamId))
-            {
-                victimModel.Add(new PlayerModel
-                {
-                    Name = victim.Name,
-                    SteamId = victim.SteamId,
-                    Count = players.Where(x=>x.SteamId==victim.SteamId).Sum(x=>x.Count) 
-                });
-            }
-
-            return victimModel;
-        }
 
         private static List<PlayerModel> GetPlayers(List<Player> players)
         {

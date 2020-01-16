@@ -1,13 +1,18 @@
 import React, { ReactNode } from 'react';
-import { Table, Avatar, Divider, Tooltip, Dropdown, Icon, Button } from 'antd';
+import {
+    Table, Avatar, Divider, Tooltip, Dropdown, Icon, Button
+} from 'antd';
 import { connect } from 'react-redux';
 import { ColumnProps } from 'antd/es/table';
-import { fetchPlayers, startRequest, stopRequest, selectPlayer } from '../../../general/ts/redux/actions';
+import {
+    fetchPlayers, startRequest, stopRequest, selectPlayer
+} from '../../../general/ts/redux/actions';
 import FilterForm, { DateValues } from './filter-form';
 import { IAppState, RootState, Player } from '../../../general/ts/redux/types';
 import ColumnsSelector from './columns-selector';
 import { nameof } from '../../../general/ts/extentions';
 import '../scss/index.scss';
+import utils from '../../../general/ts/utils';
 
 const CELL_CSS_CLASS = 'players-data__cell';
 const HIDDEN_CELL_CSS_CLASS = 'is-hidden';
@@ -21,7 +26,7 @@ export const COLUMN_NAMES: ColumnNames = {
     Deaths: { dataIndex: nameof<Player>('Deaths'), readableName: 'Deaths' },
     TotalGames: { dataIndex: nameof<Player>('TotalGames'), readableName: 'Total Games' },
     KillsPerGame: { dataIndex: nameof<Player>('KillsPerGame'), readableName: 'Kills/Game' },
-    HeadShot: { dataIndex: nameof<Player>('HeadShot'), readableName: 'HeadShot %' },
+    HeadShot: { dataIndex: nameof<Player>('HeadShot'), readableName: 'HeadShots' },
     Assists: { dataIndex: nameof<Player>('Assists'), readableName: 'Assists' },
     AssistsPerGame: { dataIndex: nameof<Player>('AssistsPerGame'), readableName: 'Assists/Game' },
     DefusedBombs: { dataIndex: nameof<Player>('DefusedBombs'), readableName: 'Defused Bombs' },
@@ -57,7 +62,7 @@ class PlayersData extends React.Component<PlayersDataProps, PlayersDataState> {
                 data = typeof data === 'string' ? JSON.parse(data) : data;
                 this.props.fetchPlayers(data);
             })
-            .catch(error => {
+            .catch((error) => {
                 this.props.stopRequest();
                 throw new Error(error);
             });
@@ -151,7 +156,7 @@ class PlayersData extends React.Component<PlayersDataProps, PlayersDataState> {
             dataIndex: COLUMN_NAMES.HeadShot.dataIndex,
             title: COLUMN_NAMES.HeadShot.readableName,
             className: this.getCellClassName(COLUMN_NAMES.HeadShot.dataIndex),
-            render: (_link: any, record: Player) => this.cellWrapper(record.Id, record.HeadShot),
+            render: (_link: any, record: Player) => this.cellWrapper(record.Id, utils.getHeadshotsString(record.HeadShot, record.Kills)),
             sorter: (a: Player, b: Player) => b.HeadShot - a.HeadShot
         },
         {
@@ -200,7 +205,7 @@ class PlayersData extends React.Component<PlayersDataProps, PlayersDataState> {
 
     get columnSelector(): ReactNode {
         const { visibleColumns } = this.state;
-        const colsToRender = visibleColumns.filter(x => !PERMANENT_COLUMNS.includes(x));
+        const colsToRender = visibleColumns.filter((x) => !PERMANENT_COLUMNS.includes(x));
         return <ColumnsSelector visibleColumns={colsToRender} onCheckboxesChange={this.onCheckboxesChange} />;
     }
 
@@ -209,7 +214,9 @@ class PlayersData extends React.Component<PlayersDataProps, PlayersDataState> {
     }
 
     render(): ReactNode {
-        const { IsLoading, DateFrom, DateTo, Players } = this.props;
+        const {
+            IsLoading, DateFrom, DateTo, Players
+        } = this.props;
 
         return (
             <>
@@ -233,13 +240,13 @@ class PlayersData extends React.Component<PlayersDataProps, PlayersDataState> {
                     rowClassName={() => 'players-data__row'}
                     columns={this.getColumns()}
                     dataSource={Players}
-                    rowKey={record => record.Id}
+                    rowKey={(record) => record.Id}
                     pagination={false}
                     size="middle"
                     bordered={true}
                     scroll={{ x: true }}
                     loading={IsLoading}
-                    onRow={record => ({
+                    onRow={(record) => ({
                         onClick: () => {
                             this.onRowClick(record);
                         }

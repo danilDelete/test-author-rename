@@ -1,8 +1,7 @@
 import React, { ReactNode } from 'react';
-import { List, Avatar, Typography } from 'antd';
+import constants from '../../../general/ts/constants';
 
-const { Title } = Typography;
-const URL_REP = 'https://api.github.com/repos/dotnetcrafted/cs-go-statistics/contributors';
+const API_URL_TAG = (repoPath: string): string => `https://api.github.com/repos${repoPath}/contributors`;
 
 export default class AuthorsCopyright extends React.Component<any, AuthorsCopyrightState> {
     state = {
@@ -17,8 +16,14 @@ export default class AuthorsCopyright extends React.Component<any, AuthorsCopyri
         ]
     };
 
+    private getApiUrl(): string {
+        const repoPath = new URL(constants.REPOSITORY).pathname;
+        return API_URL_TAG(repoPath);
+    }
+
     private getGithubAccounts = async () => {
-        const accounts: UserData[] = await fetch(URL_REP)
+        const apiUrl = this.getApiUrl();
+        const accounts: UserData[] = await fetch(apiUrl)
             .then((res: Response) => res.json())
             .then((acc) => acc.filter((elem: { type: string }) => elem.type === 'User'))
             .catch((err) => {
@@ -31,31 +36,30 @@ export default class AuthorsCopyright extends React.Component<any, AuthorsCopyri
     };
 
     componentDidMount = () => {
+        this.getApiUrl();
         this.getGithubAccounts();
     };
 
     render(): ReactNode {
         const { data } = this.state;
         return (
-            <List
-                size="small"
-                bordered={true}
-                header={<Title level={4}>Authors and Contributors:</Title>}
-                itemLayout="horizontal"
-                dataSource={data}
-                renderItem={(person): ReactNode => (
-                    <List.Item>
-                        <List.Item.Meta
-                            avatar={<Avatar icon="user" src={person.avatar_url} />}
-                            title={
-                                <div>
-                                    <a href={person.html_url}>{person.login}</a>
-                                </div>
-                            }
-                        />
-                    </List.Item>
-                )}
-            />
+            <div className="contributors">
+                <div className="contributors__title">
+                    <h4 className="contributors__title-txt">Authors and Contributors</h4>
+                </div>
+
+                <div className="contributors__content">
+                    <ul className="contributors__list">
+                        {data.map((item, index) => (
+                            <li key={index} className="contributors__item">
+                                <a className="contributors__link" href={item.html_url}>
+                                    <div className="contributors__item-title">{item.login}</div>
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
         );
     }
 }

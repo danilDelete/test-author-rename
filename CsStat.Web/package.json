@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "description": "Provide statistics for CS:GO",
     "main": "index.js",
-    "repository": "https://bitbucket.org/radik_fayskhanov/counterstrikestat/src/master/",
+    "repository": "https://github.com/dotnetcrafted/cs-go-statistics",
     "author": "DanilDelete",
     "license": "MIT",
     "scripts": {

@@ -1,9 +1,10 @@
 import React, { SFC, ReactNode } from 'react';
 import {
-    Layout, Typography, Row, Col, Divider
+    Layout, Typography, Row, Col
 } from 'antd';
 import IconCopyright from '../../icon-copyright';
 import AuthorsCopyright from '../../authors-copyright';
+import Repository from '../../repository';
 import '../scss/index.scss';
 import Navigation from '../../navigation';
 
@@ -30,12 +31,13 @@ const BaseLayout: SFC<BaseLayoutProps> = (props) => (
         <Content className="base-layout__content">
             {props.children}
         </Content>
-        <Footer>
+
+        <Footer className="base-layout__footer">
             <AuthorsCopyright />
-            <Divider />
-            <a href="https://bitbucket.org/radik_fayskhanov/counterstrikestat">Repository is available on Bitbucket.</a>
-            <Divider />
-            <IconCopyright />
+            <div className="base-layout__footer-copyright">
+                <Repository />
+                <IconCopyright />
+            </div>
         </Footer>
     </Layout>
 );

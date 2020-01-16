@@ -6,6 +6,7 @@
     &__header {
         height: auto;
         padding: 0 $default-side-padding;
+        background: $color-dark-blue;
     }
 
     &__logo {
@@ -24,5 +25,27 @@
             color: $color-white;
             margin: 0;
         }
+    }
+
+    &__footer {
+        background: lighten($color-dark-blue, 10%);
+        padding: 20px 0 0;
+        color: $color-white;
+    }
+
+    &__footer-copyright {
+        padding: 8px 20px;
+        display: flex;
+        justify-content: space-between;
+        background: lighten($color-dark-blue, 5%);
+
+        @include mobile-only() {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    &__footer-repository {
+        color: $color-white;
     }
 }

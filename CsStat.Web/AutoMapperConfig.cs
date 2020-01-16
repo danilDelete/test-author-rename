@@ -26,13 +26,13 @@ namespace CsStat.Web
                     .ForMember(dest => dest.DefusedBombs, opts => opts.MapFrom(src => src.Defuse))
                     .ForMember(dest => dest.ExplodedBombs, opts => opts.MapFrom(src => src.Explode))
                     .ForMember(dest => dest.FriendlyKills, opts => opts.MapFrom(src => src.FriendlyKills))
-                    .ForMember(dest => dest.HeadShot, opts => opts.MapFrom(src => src.HeadShot))
                     .ForMember(dest => dest.ImagePath, opts => opts.MapFrom(src => src.Player.ImagePath))
                     .ForMember(dest => dest.KdRatio, opts => opts.MapFrom(src => src.KdRatio))
                     .ForMember(dest => dest.Kills, opts => opts.MapFrom(src => src.Kills))
                     .ForMember(dest => dest.KillsPerGame, opts => opts.MapFrom(src => src.KillsPerGame))
                     .ForMember(dest => dest.Points, opts => opts.MapFrom(src => src.Points))
                     .ForMember(dest => dest.TotalGames, opts => opts.MapFrom(src => src.TotalGames))
+                    .ForMember(dest => dest.HeadShot, opts => opts.MapFrom(src => src.HeadShot))
                     .AfterMap((s, d, context) =>
                     {
                         if (s.Guns != null && s.Guns.Any())

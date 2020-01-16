@@ -1,5 +1,7 @@
 import React, { SFC } from 'react';
-import { Card, Descriptions, Avatar, Empty, Divider, Typography } from 'antd';
+import {
+    Card, Descriptions, Avatar, Empty, Divider, Typography
+} from 'antd';
 import { connect } from 'react-redux';
 import GunsChart from './guns-chart';
 import Achievements from './achievements';
@@ -7,11 +9,12 @@ import RelatedPlayers from './related-players';
 import { RootState, Player, Gun } from '../../../general/ts/redux/types';
 import { selectPlayer } from '../../../general/ts/redux/actions';
 import '../scss/index.scss';
+import utils from '../../../general/ts/utils';
 
 const { Title } = Typography;
 const { Meta } = Card;
 const VISIBLE_GUNS = 5;
-const PlayerCard: SFC<PlayerCardProps> = props => {
+const PlayerCard: SFC<PlayerCardProps> = (props) => {
     const onRelatedPlayerSelect = (name: string) => {
         const id = getIdByName(name, props.Players);
         if (!id) {
@@ -35,7 +38,7 @@ const PlayerCard: SFC<PlayerCardProps> = props => {
                     <Descriptions.Item label="Kills">{model.Kills}</Descriptions.Item>
                     <Descriptions.Item label="Deaths">{model.Deaths}</Descriptions.Item>
                     <Descriptions.Item label="Assists">{model.Assists}</Descriptions.Item>
-                    <Descriptions.Item label="HeadShot %">{model.HeadShot}</Descriptions.Item>
+                    <Descriptions.Item label="HeadShots">{utils.getHeadshotsString(model.HeadShot, model.Kills)}</Descriptions.Item>
                     <Descriptions.Item label="Defused Bombs">{model.DefusedBombs}</Descriptions.Item>
                     <Descriptions.Item label="Exploded Bombs">{model.ExplodedBombs}</Descriptions.Item>
                     <Descriptions.Item label="Kd Ratio">{model.KdRatio}</Descriptions.Item>
@@ -58,7 +61,7 @@ const PlayerCard: SFC<PlayerCardProps> = props => {
 };
 
 const getIdByName = (name: string, players: Player[]): string | undefined => {
-    const player = players.find(player => player.Name === name);
+    const player = players.find((player) => player.Name === name);
     if (player) {
         return player.Id;
     }
@@ -69,9 +72,8 @@ const renderAvatar = (src: string) => {
     }
     return <Avatar size={48} shape="square" icon="user" />;
 };
-
 const _getPlayerViewModel = (id: string, data: Player[]) => {
-    const playersRow = data.filter(item => item.Id === id)[0];
+    const playersRow = data.filter((item) => item.Id === id)[0];
     return {
         Id: playersRow.Id,
         Name: playersRow.Name,

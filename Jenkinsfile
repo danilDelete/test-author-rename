@@ -6,7 +6,7 @@ pipeline {
   stages {
     stage('Git Checkout') {
         steps {
-            git branch: 'Live', url: 'https://bitbucket.org/radik_fayskhanov/counterstrikestat.git'
+            git branch: 'Live', url: 'https://github.com/dotnetcrafted/cs-go-statistics.git'
         }
     }
     stage('Frontned') {

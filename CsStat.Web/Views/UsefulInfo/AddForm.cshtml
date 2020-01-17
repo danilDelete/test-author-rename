@@ -1,0 +1,27 @@
+@model CsStat.Domain.Entities.UsefulInfo
+
+@using (Html.BeginForm("Save", "Wiki", FormMethod.Post,new { enctype = "multipart/form-data" }))
+{
+    <form style="border: black 1px solid; display: inline-block; margin-top: 15px;" method="post">
+        <label for="caption">Caption</label>
+        @Html.EditorFor(x => x.Caption, new { id = "caption", name = "caption" }) <br />
+        <label for="description">Description</label>
+        @Html.EditorFor(x => x.Description, new { id = "description", name = "description" }) <br />
+        <label for="url">URL</label>
+        @Html.EditorFor(x => x.Url, new { id = "url", name = "url" }) <br />
+        <input type="hidden" id="id" name="Id" value="@Model.Id">
+        <input type="hidden" id="publishDate" name="publishDate" value="@Model.PublishDate">
+        <label for="image">Image</label>
+        <input type="file" name="Image" id="Image" accept="image/*"><br />
+        @if (!string.IsNullOrEmpty(Model.Image))
+        {
+            <label for="imagePath">Old Image</label>
+            <img src="@Url.Content("~/Files/Images/" + Model.Image)" width="200" height="100" alt="image"  />
+            <input type="hidden" name="imagePath" value="@Model.Image">
+            <br />
+        }
+        <label for="tags">Tags</label>
+        @Html.EditorFor(x => x.Tags, new { id = "tags", name = "tags" }) <br />
+        <input type="submit" value="Save" />
+    </form>
+}

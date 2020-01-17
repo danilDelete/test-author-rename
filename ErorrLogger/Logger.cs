@@ -13,6 +13,7 @@ namespace ErrorLogger
     public interface ILogger
     {
         void Error(string latestString, Exception exception, string message);
+        void Error(Exception exception, string message);
     }
     public class Logger : ILogger
     {
@@ -35,6 +36,11 @@ namespace ErrorLogger
             };
 
             _errorLogRepository.Error(error);
+        }
+
+        public void Error(Exception exception, string message)
+        {
+            Error("", exception, message);
         }
     }
 }

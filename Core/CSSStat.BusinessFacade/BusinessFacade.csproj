@@ -62,8 +62,12 @@
     <Compile Include="Repositories\Implementations\BaseRepository.cs" />
     <Compile Include="Repositories\Implementations\ErrorLogRepository.cs" />
     <Compile Include="Repositories\Implementations\PlayerRepository.cs" />
+    <Compile Include="Repositories\Implementations\UsefulLinkRepository.cs" />
+    <Compile Include="Repositories\Implementations\UserRepository.cs" />
     <Compile Include="Repositories\IPlayerRepository.cs" />
     <Compile Include="Repositories\Implementations\LogsRepository.cs" />
+    <Compile Include="Repositories\IUsefulLinkRepository.cs" />
+    <Compile Include="Repositories\IUserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

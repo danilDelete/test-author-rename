@@ -36,8 +36,13 @@ function stringInterpolate(template: string, data: any, customizer: (key: any, d
     });
 }
 
+const getHeadshotsString = (HeadShot: number, Kills: number): string => {
+    return Kills === 0 ? '0' : `${HeadShot} (${Math.round((HeadShot / Kills) * 100)}%)`
+};
+
 export default {
     log,
     stringFormat,
-    stringInterpolate
+    stringInterpolate,
+    getHeadshotsString
 };

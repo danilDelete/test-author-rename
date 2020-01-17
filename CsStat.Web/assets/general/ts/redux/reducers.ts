@@ -1,17 +1,28 @@
-import { Reducer } from 'redux';
+import { Reducer, combineReducers } from 'redux';
+import { connectRouter } from 'connected-react-router';
 import {
-    AppState,
+    IAppState,
     ActionTypes,
     SELECT_PLAYER,
     FETCH_PLAYERS_DATA,
     START_REQUEST,
-    STOP_REQUEST
+    STOP_REQUEST,
+    FETCH_POSTS_DATA
 } from './types';
 
-const rootReducer: Reducer<AppState> = (
-    state: AppState = initialState,
+export const initialState: IAppState = {
+    IsLoading: false,
+    Players: [],
+    SelectedPlayer: '',
+    DateFrom: '',
+    DateTo: '',
+    Posts: []
+};
+
+const appReducer: Reducer<IAppState> = (
+    state: IAppState = initialState,
     action: ActionTypes
-): AppState => {
+): IAppState => {
     switch (action.type) {
         case FETCH_PLAYERS_DATA:
             return {
@@ -21,6 +32,12 @@ const rootReducer: Reducer<AppState> = (
                 DateFrom: action.payload.DateFrom,
                 DateTo: action.payload.DateTo,
                 SelectedPlayer: ''
+            };
+        case FETCH_POSTS_DATA:
+            return {
+                ...state,
+                IsLoading: false,
+                Posts: action.payload,
             };
         case SELECT_PLAYER:
             return {
@@ -45,12 +62,11 @@ const rootReducer: Reducer<AppState> = (
     }
 };
 
-const initialState: AppState = {
-    IsLoading: false,
-    Players: [],
-    SelectedPlayer: '',
-    DateFrom: '',
-    DateTo: ''
-};
+export const createRootReducer = (history: any): Reducer =>
+    combineReducers({
+        router: connectRouter(history),
+        app: appReducer
+    });
 
-export default rootReducer;
+export default createRootReducer;
+

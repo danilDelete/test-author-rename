@@ -71,6 +71,11 @@ class FilterForm extends React.Component<IFilterFormProps, FilterFormState> {
                                 This Month
                             </Button>
                         </Form.Item>
+                        <Form.Item>
+                            <Button onClick={this.onAllButtonClick} disabled={this.props.isLoading}>
+                                All Time
+                            </Button>
+                        </Form.Item>
                     </Col>
                 </Row>
             </Form>
@@ -185,6 +190,15 @@ class FilterForm extends React.Component<IFilterFormProps, FilterFormState> {
             dateFrom: moment()
                 .startOf('month')
                 .format(SERVER_DATE_FORMAT),
+            dateTo: moment().format(SERVER_DATE_FORMAT)
+        };
+
+        this.props.onFormSubmit(values);
+    };
+    
+    private onAllButtonClick = () => {
+        const values: DateValues = {
+            dateFrom: '',
             dateTo: moment().format(SERVER_DATE_FORMAT)
         };
 

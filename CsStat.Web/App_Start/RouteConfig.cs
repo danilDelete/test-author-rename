@@ -10,6 +10,8 @@ namespace CsStat.Web
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.LowercaseUrls = true;
+
             routes.MapRoute
             (
                 name: "getrepository",
@@ -17,6 +19,34 @@ namespace CsStat.Web
                 defaults: new { controller = "Home", action = "GetRepository", id = UrlParameter.Optional }
             );
 
+            //don't remove: custom admin
+            //routes.MapRoute
+            //(
+            //    name: "Admin",
+            //    url: "Admin",
+            //    defaults: new { controller = "SignIn", action = "SignIn", id = UrlParameter.Optional }
+            //);
+
+            routes.MapRoute
+            (
+                name: "Admin",
+                url: "Admin",
+                defaults: new { controller = "SignIn", action = "Admin", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute
+            (
+                name: "getinfo",
+                url: Settings.WikiDataApiPath,
+                defaults: new { controller = "Wiki", action = "GetAllArticlesFromCms", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "wiki",
+                url: Settings.WikiPagePath,
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+            );
+            
             routes.MapRoute
             (
                 name: "getMatchesData",

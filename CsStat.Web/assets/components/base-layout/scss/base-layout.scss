@@ -1,0 +1,51 @@
+.base-layout {
+    &__layout {
+        min-height: 100vh;
+    }
+
+    &__header {
+        height: auto;
+        padding: 0 $default-side-padding;
+        background: $color-dark-blue;
+    }
+
+    &__logo {
+        color: $color-white;
+        font-size: 32px;
+    }
+
+    &__content {
+        margin: $container-padding-top 0;
+        padding: 0 $default-side-padding;
+    }
+
+    &__title {
+        @at-root h1#{&} {
+            font-size: 20px;
+            color: $color-white;
+            margin: 0;
+        }
+    }
+
+    &__footer {
+        background: lighten($color-dark-blue, 10%);
+        padding: 20px 0 0;
+        color: $color-white;
+    }
+
+    &__footer-copyright {
+        padding: 8px 20px;
+        display: flex;
+        justify-content: space-between;
+        background: lighten($color-dark-blue, 5%);
+
+        @include mobile-only() {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    &__footer-repository {
+        color: $color-white;
+    }
+}

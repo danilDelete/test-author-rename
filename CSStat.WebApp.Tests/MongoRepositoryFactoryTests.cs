@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -7,9 +6,10 @@ using System.Security.Authentication;
 using BusinessFacade.Repositories;
 using BusinessFacade.Repositories.Implementations;
 using CSStat.CsLogsApi.Extensions;
-using CsStat.Domain.Definitions;
 using CsStat.Domain.Entities;
 using CsStat.LogApi.Enums;
+using CsStat.Web.Helpers;
+using CsStat.Web.Models;
 using CSStat.WebApp.Tests.Entity;
 using DataService;
 using DataService.Interfaces;
@@ -27,6 +27,10 @@ namespace CSStat.WebApp.Tests
         private readonly ILogsRepository _logRepository;
         private readonly IPlayerRepository _playerRepository;
         private readonly IBaseRepository _baseRepository;
+        private readonly IUsefulLinkRepository _usefulLinkRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly UserRegistrationService _registrationService;
+
         public  MongoRepositoryFactoryTests()
         {
             _connectionString = new ConnectionStringFactory();
@@ -34,6 +38,9 @@ namespace CSStat.WebApp.Tests
             _logRepository = new LogsRepository(_mongoRepository);
             _playerRepository = new PlayerRepository(_mongoRepository);
             _baseRepository = new BaseRepository(_mongoRepository);
+            _usefulLinkRepository = new UsefulLinkRepository(_mongoRepository);
+            _userRepository = new UserRepository(_mongoRepository);
+            _registrationService = new UserRegistrationService(_userRepository);
         }
         [Test]
         public void ReturnRepositoryOfType()
@@ -147,6 +154,21 @@ namespace CSStat.WebApp.Tests
             var players = _playerRepository.GetAllPlayers();
         }
 
+        [Test]
+        public void AddInfo()
+        {
+            var info = new UsefulInfo
+            {
+                Description = "Lorem ipsum dolor sit amet",
+                Caption = "Test info",
+                PublishDate = DateTime.Now,
+                Url = "google.com"
+            };
+
+            _usefulLinkRepository.Add(info);
+
+        }
+
         private static byte[] ReadImage(string path)
         {
           using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read))
@@ -159,6 +181,29 @@ namespace CSStat.WebApp.Tests
           }
         }
 
+        [Test]
+        public void SignUp()
+        {
+            var userModel = new SignInViewModel()
+            {
+                Name = "admin",
+                Password = "salo"
+            };
+            var result = _registrationService.SignUp(userModel).FirstOrDefault();
+            Console.WriteLine(result.Value);
+        }
+
+        [Test]
+        public void SignIn()
+        {
+            var userModel = new SignInViewModel
+            {
+                Name = "admin",
+                Password = "123@SX"
+            };
+            var result = _registrationService.SignIn(userModel);
+            Console.WriteLine(result.ToString());
+        }
         private static void PrintPlayer(Player player)
         {
             Console.WriteLine($"First Name: {player.FirstName},Second Name: {player.SecondName},Nick Name: {player.NickName},Image: {player.ImagePath}".Replace(',', '\n'));

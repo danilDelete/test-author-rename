@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using BusinessFacade.Repositories;
 using BusinessFacade.Repositories.Implementations;
+using CsStat.Domain.Entities;
 using CsStat.LogApi;
 using CsStat.LogApi.Interfaces;
 using DataService;
@@ -43,6 +44,8 @@ namespace CSStat.WebApp.Infrastructure
             _kernel.Bind<IDemoRepository>().To<DemoRepository>();
             _kernel.Bind<ISteamApi>().To<SteamApi>();
             _kernel.Bind<ILogger>().To<Logger>();
+            _kernel.Bind<IUsefulLinkRepository>().To<UsefulLinkRepository>();
+            _kernel.Bind<IUserRepository>().To<UserRepository>();
         }
     }
 }

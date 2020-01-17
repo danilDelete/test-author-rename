@@ -222,7 +222,7 @@ namespace ReadFile.ReadDemo
                 }).ToList()
             };
 
-            demoRepository.InsertLog(demoLog);
+            demoRepository.Insert(demoLog);
         }
 
         private static void Parser_PlayerBind(object sender, PlayerBindEventArgs e)
@@ -318,9 +318,6 @@ namespace ReadFile.ReadDemo
                 }
             }
 
-            _lastCTScore = _parser.CTScore;
-            _lastTScore = _parser.TScore;
-
             var winningTeam = Team.Spectate;
             if (_lastTScore != _parser.TScore)
             {
@@ -330,6 +327,9 @@ namespace ReadFile.ReadDemo
             {
                 winningTeam = Team.CounterTerrorist;
             }
+
+            _lastCTScore = _parser.CTScore;
+            _lastTScore = _parser.TScore;
 
             _currentRound.Winner = winningTeam;
 

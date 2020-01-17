@@ -147,7 +147,7 @@ namespace BusinessFacade.Repositories.Implementations
 
             playersStats = playersStats.Where(x => x.TotalGames > 0).OrderByDescending(x=>x.Kills).ToList();
 
-            var achievements = GetAchievements(playersStats);
+            var achievements = GetAchievements(playersStats.OrderByDescending(x=>x.KdRatio).ToList());
 
             foreach (var playerStats in playersStats)
             {
@@ -206,13 +206,13 @@ namespace BusinessFacade.Repositories.Implementations
                 new AchieveModel
                 {
                     Achieve = AchievementsEnum.First,
-                    PlayerId = playersStats.Where(x=>x.KdRatio!=0).OrderByDescending(x => x.KdRatio).FirstOrDefault()?.Player.SteamId
+                    PlayerId = playersStats.Where(x=>x.KdRatio!=0).OrderByDescending(x => x.KdRatio).ThenByDescending(x=>x.Kills).FirstOrDefault()?.Player.SteamId
                 },
 
                 new AchieveModel
                 {
                     Achieve = AchievementsEnum.Second,
-                    PlayerId = playersStats.Where(x=>x.KdRatio!=0).OrderByDescending(x => x.KdRatio).Skip(1).Take(1).First().Player.SteamId
+                    PlayerId = playersStats.Where(x=>x.KdRatio!=0).OrderByDescending(x => x.KdRatio).ThenByDescending(x=>x.Kills).Skip(1).Take(1).First().Player.SteamId
                 },
 
                 new AchieveModel

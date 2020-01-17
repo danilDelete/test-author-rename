@@ -63,7 +63,7 @@ namespace CsStat.Web.Controllers
 
         private static IEnumerable<PlayerStatsViewModel> GetPlayersStat(string dateFrom = "", string dateTo = "")
         {
-            var players = _playerRepository.GetStatsForAllPlayers(dateFrom, dateTo).ToList();
+            var players = _playerRepository.GetStatsForAllPlayers(dateFrom, dateTo).OrderByDescending(x=>x.KdRatio).ToList();
             var steamIds = string.Join(",", players.Select(x => x.Player.SteamId).ToList());
             var avatars = _steamApi.GetAvatarUrlBySteamId(steamIds);
 

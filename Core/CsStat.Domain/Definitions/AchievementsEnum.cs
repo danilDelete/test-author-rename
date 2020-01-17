@@ -48,10 +48,19 @@ namespace CsStat.Domain.Definitions
 
         [Caption("Pitcher")]
         [Description("Player with most HE grenade kills")]
-        Pitcher ,
+        Pitcher,
 
         [Caption("Firebug")]
         [Description("Player with most fire grenade kills")]
-        Firebug
+        Firebug,
+
+        [Caption("Sapper")]
+        [Description("Player with most defused bombs")]
+        Sapper,
+
+        [Caption("Bomberman")]
+        [Description("5-4-3-2-1 Boom! Player with most exploded bombs")]
+        Bomberman
+
     }
 }

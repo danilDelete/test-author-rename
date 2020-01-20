@@ -95,6 +95,8 @@ namespace ReadFile.ReadDemo
                     return Guns.Usps;
                 case EquipmentElement.XM1014:
                     return Guns.Xml;
+                case EquipmentElement.World:
+                    return Guns.World;
                 default:
                     return Guns.Unknown;
             }

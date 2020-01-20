@@ -10,6 +10,7 @@
         public string Weapon { get; set; }
         public long? Assister { get; set; }
         public string AssisterName { get; set; }
+        public bool IsSuicide { get; set; }
         public int RoundNumber { get; set; }
     }
 }

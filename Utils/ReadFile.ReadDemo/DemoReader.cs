@@ -17,8 +17,8 @@ namespace ReadFile.ReadDemo
 {
     public class DemoReader : BaseWatcher
     {
-        private const string SuqadA = "SquadA";
-        private const string SuqadB = "SquadB";
+        private const string SuqadA = "Team A";
+        private const string SuqadB = "Team B";
         private const int SwapRoundNumber = 15;
 
         private static DemoParser _parser;
@@ -364,10 +364,14 @@ namespace ReadFile.ReadDemo
 
         private static void Parser_PlayerKilled(object sender, PlayerKilledEventArgs e)
         {
-            if (_matchStarted && e.Killer != null && e.Killer.SteamID != 0 && e.Victim != null && e.Victim.SteamID != 0)
+            if(!_matchStarted)
+                return;
+
+            if (e.Killer != null && e.Killer.SteamID != 0 && e.Victim != null && e.Victim.SteamID != 0)
             {
                 var kill = new Kill(_results.Players[e.Killer.SteamID], _results.Players[e.Victim.SteamID],
-                    e.Headshot, EquipmentMapper.Map(e.Weapon.Weapon).GetDescription(), _currentRoundNumber);
+                    e.Headshot, EquipmentMapper.Map(e.Weapon.Weapon).GetDescription(), _currentRoundNumber,
+                    e.Killer.SteamID == e.Victim.SteamID);
 
                 if (e.Assister != null)
                 {
@@ -376,13 +380,28 @@ namespace ReadFile.ReadDemo
                 }
 
                 _results.Players[e.Killer.SteamID].Kills.Add(kill);
-
                 _results.Players[e.Victim.SteamID].Deaths.Add(kill);
 
                 if (e.Killer.Team == e.Victim.Team)
                 {
                     _results.Players[e.Killer.SteamID].Teamkills.Add(kill);
                 }
+            }
+
+            // suicide
+            if (e.Killer == null && e.Victim != null && e.Victim.SteamID != 0)
+            {
+                var kill = new Kill(null, _results.Players[e.Victim.SteamID],
+                    e.Headshot, EquipmentMapper.Map(e.Weapon.Weapon).GetDescription(),
+                    _currentRoundNumber, true);
+
+                if (e.Assister != null)
+                {
+                    kill.Assister = _results.Players[e.Assister.SteamID];
+                    kill.Assister.Assists.Add(kill);
+                }
+
+                _results.Players[e.Victim.SteamID].Deaths.Add(kill);
             }
         }
 

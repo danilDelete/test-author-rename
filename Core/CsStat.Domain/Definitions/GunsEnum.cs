@@ -5,6 +5,10 @@ namespace CsStat.Domain.Definitions
 {
     public enum Guns
     {
+        [Description("World")]
+        [IsSniperRifle(false)] 
+        World, // suicide
+
         [IsSniperRifle(false)]
         Unknown,
 

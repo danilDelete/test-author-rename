@@ -18,8 +18,9 @@ pipeline {
     stage('Backend') {
       steps {
           bat 'C:\\ForBuilding\\nuget.exe restore "%WORKSPACE%/CounterStrikeStat.sln'
-          bat '\"${tool 'MSBuildLocal'}\" CounterStrikeStat.sln /p:Configuration=Debug /p:Platform=\"Any CPU\"'
+          bat "\"${tool 'MSBuildLocal'}\" CounterStrikeStat.sln /p:Configuration=Debug /p:Platform=\"Any CPU\""
       }
+    }
     stage('Publish') {
       steps {
           bat 'rmdir "C:\\inetpub\\wwwroot\\dist" /s /q'

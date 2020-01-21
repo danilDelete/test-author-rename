@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from '../../../general/ts/redux/types';
+import constants from '../../../general/ts/constants';
 
 class Navigation extends React.Component <NavigationProps> {
     render(): ReactNode {
@@ -13,13 +14,16 @@ class Navigation extends React.Component <NavigationProps> {
                 theme="dark"
                 selectedKeys={[this.props.router.location.pathname]}
             >
-                <Menu.Item key="/">
-                    <Link to="/">
+                <Menu.Item key={constants.ROUTES.HOME}>
+                    <Link to={constants.ROUTES.HOME}>
                         Home
                     </Link>
                 </Menu.Item>
-                <Menu.Item key="/wiki">
-                    <Link to="/wiki">Wiki</Link>
+                <Menu.Item key={constants.ROUTES.WIKI}>
+                    <Link to={constants.ROUTES.WIKI}>Wiki</Link>
+                </Menu.Item>
+                <Menu.Item key={constants.ROUTES.DEMO_READER}>
+                    <Link to={constants.ROUTES.DEMO_READER}>Demo Reader</Link>
                 </Menu.Item>
             </Menu>
         );

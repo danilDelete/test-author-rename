@@ -7,6 +7,8 @@ import configureStore, { history } from '../../../general/ts/redux/store';
 import HomePage from '../../pages/ts/home-page';
 import WikiPage from '../../pages/ts/wiki-page';
 import NotFoundPage from '../../pages/ts/not-found-page';
+import DemoReaderPage from '../../pages/ts/demo-reader-page';
+import constants from '../../../general/ts/constants';
 
 const store = configureStore();
 
@@ -15,11 +17,14 @@ const App: SFC<AppProps> = (props) => (
         <ConnectedRouter history={history}>
             <BaseLayout>
                 <Switch>
-                    <Route exact path="/" >
+                    <Route exact path={constants.ROUTES.HOME} >
                         <HomePage playersDataUrl={props.playersDataUrl}/>
                     </Route>
-                    <Route exact path="/wiki" >
+                    <Route exact path={constants.ROUTES.WIKI} >
                         <WikiPage WikiDataApiPath={props.WikiDataApiPath}/>
+                    </Route>
+                    <Route exact path={constants.ROUTES.DEMO_READER} >
+                        <DemoReaderPage/>
                     </Route>
                     <Route>
                         <NotFoundPage/>

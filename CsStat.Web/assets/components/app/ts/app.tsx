@@ -24,7 +24,7 @@ const App: SFC<AppProps> = (props) => (
                         <WikiPage WikiDataApiPath={props.WikiDataApiPath}/>
                     </Route>
                     <Route exact path={constants.ROUTES.DEMO_READER} >
-                        <DemoReaderPage/>
+                        <DemoReaderPage MatchesDataApiPath={props.MatchesDataApiPath}/>
                     </Route>
                     <Route>
                         <NotFoundPage/>
@@ -39,6 +39,7 @@ const App: SFC<AppProps> = (props) => (
 type AppProps = {
     playersDataUrl: string;
     WikiDataApiPath: string;
+    MatchesDataApiPath: string;
 };
 
 export default App;

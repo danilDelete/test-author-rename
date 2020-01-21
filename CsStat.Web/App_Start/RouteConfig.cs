@@ -46,7 +46,13 @@ namespace CsStat.Web
                 url: Settings.WikiPagePath,
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
-            
+
+            routes.MapRoute(
+                name: "demo-reader",
+                url: Settings.DemoReaderPagePath,
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+            );
+
             routes.MapRoute
             (
                 name: "getMatchesData",

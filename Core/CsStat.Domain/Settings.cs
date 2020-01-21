@@ -17,6 +17,7 @@ namespace CsStat.Domain
         public static string MatchesDataApiPath => GetSetting(nameof(MatchesDataApiPath), Defaults.MatchesDataApiPath);
         public static string WikiDataApiPath => GetSetting(nameof(WikiDataApiPath), Defaults.WikiDataApiPath);
         public static string WikiPagePath => GetSetting(nameof(WikiPagePath), Defaults.WikiPagePath);
+        public static string DemoReaderPagePath => GetSetting(nameof(DemoReaderPagePath), Defaults.DemoReaderPagePath);
         public static string PlayersDataSteamApiPath => GetSetting(nameof(PlayersDataSteamApiPath), Defaults.PlayersDataSteamApiPath);
         public static long FirstSteamId => GetSetting(nameof(FirstSteamId), Defaults.FirstSteamId);
         public static string ApiKey => GetSetting(nameof(ApiKey), Defaults.ApiKey);
@@ -63,6 +64,7 @@ namespace CsStat.Domain
             public const string MatchesDataApiPath = "api/matchesdata";
             public const string WikiDataApiPath = "api/articles";
             public const string WikiPagePath = "wiki";
+            public const string DemoReaderPagePath = "demo-reader";
             public const string PlayersDataSteamApiPath = @"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/";
             public const long FirstSteamId = 76561197960265728;
             public const string ApiKey = "C03F2D79CF2FE20B64A85531031F3983";

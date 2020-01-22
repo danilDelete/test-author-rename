@@ -21,7 +21,7 @@ namespace CsStat.Web
                     .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Player.NickName))
                     .ForMember(dest => dest.Assists, opts => opts.MapFrom(src => src.Assists))
                     .ForMember(dest => dest.AssistsPerGame, opts => opts.MapFrom(src => src.AssistsPerGame))
-                    .ForMember(dest => dest.Deaths, opts => opts.MapFrom(src => src.Death))
+                    .ForMember(dest => dest.Deaths, opts => opts.MapFrom(src => src.Deaths))
                     .ForMember(dest => dest.DeathsPerGame, opts => opts.MapFrom(src => src.DeathPerGame))
                     .ForMember(dest => dest.DefusedBombs, opts => opts.MapFrom(src => src.Defuse))
                     .ForMember(dest => dest.ExplodedBombs, opts => opts.MapFrom(src => src.Explode))

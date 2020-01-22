@@ -9,7 +9,7 @@ namespace CsStat.Domain.Entities
     {
         public Player Player { get; set; }
         public int Kills { get; set; }
-        public int Death { get; set; }
+        public int Deaths { get; set; }
         public int Assists { get; set; }
         public int HeadShot { get; set; }
         public int TotalGames { get; set; }
@@ -30,9 +30,9 @@ namespace CsStat.Domain.Entities
         {
             get
             {
-                if (Death > 0)
+                if (Deaths > 0)
                 {
-                    return Math.Round((double)Kills / Death,2);
+                    return Math.Round((double)Kills / Deaths,2);
                 }
 
                 return Kills;
@@ -71,7 +71,7 @@ namespace CsStat.Domain.Entities
                     return 0;
                 }
 
-                return Math.Round((double)Death / TotalGames,2);
+                return Math.Round((double)Deaths / TotalGames,2);
             }
         }
     }

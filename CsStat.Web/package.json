@@ -88,7 +88,7 @@
         "github-markdown-css": "^3.0.1",
         "history": "^4.10.1",
         "jsonp": "0.2.1",
-        "lazysizes": "5.1.1",
+        "lazysizes": "5.2.1",
         "markdown-to-jsx": "^6.10.3",
         "moment": "2.24.0",
         "prop-types": "15.7.2",

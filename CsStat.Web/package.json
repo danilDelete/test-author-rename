@@ -90,7 +90,7 @@
         "jsonp": "0.2.1",
         "lazysizes": "5.1.1",
         "markdown-to-jsx": "^6.10.3",
-        "moment": "2.24.0",
+        "moment": "2.29.2",
         "prop-types": "15.7.2",
         "randomcolor": "0.5.4",
         "react": "16.9.0",
